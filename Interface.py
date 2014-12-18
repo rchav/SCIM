@@ -53,3 +53,4 @@ class interface(Tkinter.Tk):
         self.update()
 
         self.geometry("420x438+%d+%d" % (x,y))
+        
