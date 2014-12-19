@@ -13,6 +13,6 @@ import Interface
 
 
 SCIM = Interface.interface(None)
-SCIM.title('SCIM (Surveillance Camera Interactive Map)')
+SCIM.title('SCIM - Surveillance Camera Interactive Map')
 
 SCIM.mainloop()
