@@ -36,7 +36,11 @@ class interface(Tkinter.Tk):
         # location name entry box and label
         self.locationVariable = Tkinter.StringVar()
         self.locationEntry = Tkinter.Entry(self, textvariable = self.locationVariable, width=35)
+        self.locationEntry.insert(0, "Enter location name")
+        self.locationEntry.configure(fg="Gray")
         self.locationEntry.grid(column=1,row=1,sticky='E',columnspan=3)
+        self.locationEntry.bind("<FocusIn>", self.clearLocationName)
+        self.locationEntry.bind("<FocusOut>", self.resetLocationPlaceholder)
 
         locationLabelVar = Tkinter.StringVar()
         locationLabelVar.set("Location Name: ")
@@ -80,4 +84,16 @@ class interface(Tkinter.Tk):
         self.update()
 
         self.geometry("420x438+%d+%d" % (x,y))
+
+    def clearLocationName(self, event):
+        locationName = self.locationEntry.get()
+        if locationName == "Enter location name":
+            self.locationEntry.delete(0, Tkinter.END)
+            self.locationEntry.configure(fg="Black")
+    
+    def resetLocationPlaceholder(self, event):
+        locationName = self.locationEntry.get()
+        if len(locationName) == 0:
+            self.locationEntry.configure(fg="Gray")
+            self.locationEntry.insert(0, "Enter location name")
         
