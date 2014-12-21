@@ -1,7 +1,7 @@
 """
 ******************************************************************************
 
-SCIM: Interface
+SCIM: Interface Init
 
 Robert Chavez
 All rights reserved

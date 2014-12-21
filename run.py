@@ -9,10 +9,10 @@ All rights reserved
 ******************************************************************************
 """
 
-import Interface
+import Interface_init
 
 
-SCIM = Interface.interface(None)
+SCIM = Interface_init.interface(None)
 SCIM.title('SCIM - Surveillance Camera Interactive Map')
 
 SCIM.mainloop()
