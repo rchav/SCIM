@@ -50,10 +50,17 @@ class interface(Tkinter.Tk):
         locationLabelVar = Tkinter.StringVar()
         locationLabelVar.set("Camera Location Name: ")
         locationLabel = Tkinter.Label(self, textvariable = locationLabelVar, anchor="w", font=self.labelFont)
-        locationLabel.grid(column=0,row=1,sticky='W',columnspan=3)
+        locationLabel.grid(column=0,row=1,sticky='W',columnspan=3, pady=7)
 
-        addressGroup = Tkinter.LabelFrame(self, text="Address", padx=5)
-        
+        # group for address widgets
+        addressGroup = Tkinter.LabelFrame(self, bd=0)
+        addressGroup.grid(column=0,row=4,sticky='w', padx=5)
+
+        # Address label
+        addressLabelVar = Tkinter.StringVar()
+        addressLabelVar.set("Address: ")
+        addressLabel = Tkinter.Label(self, textvariable = addressLabelVar, anchor='w', font=self.labelFont)
+        addressLabel.grid(column=0,row=3, sticky='w', pady=7)
 
         # Address vars
         self.addressStreetVar = Tkinter.StringVar()
@@ -64,49 +71,60 @@ class interface(Tkinter.Tk):
         self.addressStateVar.set("NY")
 
         # Address entry boxes init (row 3 - 10)
-        self.addressStreetEntry = Tkinter.Entry(self, textvariable = self.addressStreetVar, font=self.textboxFont)
+        self.addressStreetEntry = Tkinter.Entry(addressGroup, textvariable = self.addressStreetVar, font=self.textboxFont)
         self.addressStreetEntry.insert(0, "123 Street Name")
         self.addressStreetEntry.configure(fg="Gray")
-        self.addressStreetEntry.grid(column=0,row=5,sticky='W',columnspan=2,padx=5)
+        self.addressStreetEntry.grid(column=0,row=5,sticky='W', columnspan=2)
         self.addressStreetEntry.bind("<FocusIn>", self.clearAddressStreet)
         self.addressStreetEntry.bind("<FocusOut>", self.resetAddressStreetPlaceholder)
 
         # address 2nd line
-        self.addressLine2Entry = Tkinter.Entry(self, textvariable = self.addressLine2Var, font=self.textboxFont)
-        self.addressLine2Entry.grid(column=0,row=6,sticky='W',columnspan=2,padx=5)
+        self.addressLine2Entry = Tkinter.Entry(addressGroup, textvariable = self.addressLine2Var, font=self.textboxFont)
+        self.addressLine2Entry.grid(column=0,row=6,sticky='W', columnspan=2)
         self.addressLine2Entry.insert(0, "Apt, suite, etc.")
         self.addressLine2Entry.configure(fg="Gray")
         self.addressLine2Entry.bind("<FocusIn>", self.clearAddressLine2)
         self.addressLine2Entry.bind("<FocusOut>", self.resetAddressLine2Placeholder)
 
         # address city
-        self.addressCityEntry = Tkinter.Entry(self, textvariable = self.addressCityVar, width=16, font=self.textboxFont, bg="#767676")
-        self.addressCityEntry.grid(column=0,row=7,sticky='W',columnspan=2,padx=5)
+        self.addressCityEntry = Tkinter.Entry(addressGroup, textvariable = self.addressCityVar, width=16, font=self.textboxFont, bg="#767676")
+        self.addressCityEntry.grid(column=0,row=7,sticky='W')
         self.addressCityEntry.configure(state='readonly')
         
         # address state
-        self.addressStateEntry = Tkinter.Entry(self, textvariable = self.addressStateVar, width=3, font=self.textboxFont, bg="#767676")
-        self.addressStateEntry.grid(column=1,row=7,sticky='W',columnspan=3)
+        self.addressStateEntry = Tkinter.Entry(addressGroup, textvariable = self.addressStateVar, width=3, font=self.textboxFont, bg="#767676")
+        self.addressStateEntry.grid(column=1,row=7,sticky='W',padx=4)
         self.addressStateEntry.configure(state='readonly')
 
-        # Address label
-        addressLabelVar = Tkinter.StringVar()
-        addressLabelVar.set("Address: ")
-        addressLabel = Tkinter.Label(self, textvariable = addressLabelVar, anchor='w', font=self.labelFont)
-        addressLabel.grid(column=0,row=3, sticky='w')
+        # group the Lat/Long entry boxes
+        geoGroup = Tkinter.LabelFrame(self, bd=0)
+        geoGroup.grid(column=1,row=4,rowspan=4,sticky='nw', padx=5)
 
         # lat and long boxes (auto pop when address is completed)
         self.latitudeVar = Tkinter.StringVar()
-        self.latitudeEntry = Tkinter.Entry(self, textvariable=self.latitudeVar, width=19, font=self.textboxFont)
-        self.latitudeEntry.grid(column=3,row=5,sticky='w')
+        self.latitudeEntry = Tkinter.Entry(geoGroup, textvariable=self.latitudeVar, width=10, font=self.textboxFont)
+        self.latitudeEntry.grid(column=0,row=2,sticky='w')
+        self.latitudeEntry.insert(0, 'Latitude')
+        self.latitudeEntry.configure(fg="Gray", state='readonly')
 
+        self.longitudeVar = Tkinter.StringVar()
+        self.longitudeEntry = Tkinter.Entry(geoGroup, textvariable=self.longitudeVar, width=10, font=self.textboxFont)
+        self.longitudeEntry.grid(column=0,row=4, sticky='w')
+        self.longitudeEntry.insert(0, 'Longitude')
+        self.longitudeEntry.configure(fg="Gray", state='readonly')
+
+        # label the coordinates
+        geoLabelVar = Tkinter.StringVar()
+        geoLabelVar.set("Geo Coordinates:    ")
+        geoLabel = Tkinter.Label(self, textvariable=geoLabelVar, anchor='w', font=self.labelFont)
+        geoLabel.grid(column=1,row=3,sticky='w')
 
         # date of video recovery setup (row 11-20)
             # label
         dateOfRecordingLabelVar = Tkinter.StringVar()
         dateOfRecordingLabelVar.set("Date of video recording: ")
         dateOfRecordingLabel = Tkinter.Label(self, textvariable=dateOfRecordingLabelVar, anchor='w', font=self.labelFont)
-        dateOfRecordingLabel.grid(column=0, row=11, sticky='w')
+        dateOfRecordingLabel.grid(column=0, row=11, sticky='w', pady=7)
 
             # entry box
         self.dateOfRecordingVar = Tkinter.StringVar()
@@ -121,11 +139,11 @@ class interface(Tkinter.Tk):
         cameraDetailsLabelVar = Tkinter.StringVar()
         cameraDetailsLabelVar.set("Camera surveillance details:")
         cameraDetailsLabel = Tkinter.Label(self, textvariable=cameraDetailsLabelVar, anchor='w',font=self.labelFont)
-        cameraDetailsLabel.grid(column=0,row=21,sticky='w')
+        cameraDetailsLabel.grid(column=0,row=21,sticky='w', pady=7)
 
 
         self.cameraDetailsText = Tkinter.Text(self, height=4, width=50)
-        self.cameraDetailsText.grid(column=0, row=22, sticky='w', padx=5)
+        self.cameraDetailsText.grid(column=0, row=22, sticky='w', columnspan=2, padx=5)
         self.cameraDetailsText.insert(Tkinter.END, "Cameras face the front desk from the back of the store. High definition footage available.")
         self.cameraDetailsText.configure(fg="Gray", font=self.textboxFont, wrap=Tkinter.WORD)
         self.cameraDetailsText.bind("<FocusIn>", self.clearDetails)
@@ -140,7 +158,7 @@ class interface(Tkinter.Tk):
         self.resizable(False,False)
         self.update()
 
-        self.geometry("420x438+%d+%d" % (x,y))
+        self.geometry("450x600+%d+%d" % (x,y))
 
 
 #Textbox clear and placeholder methods
@@ -211,3 +229,6 @@ class interface(Tkinter.Tk):
         if len(details) == 1:
             self.cameraDetailsText.configure(fg="Gray")
             self.cameraDetailsText.insert(1.0, "Cameras face the front desk from the back of the store. High definition footage available.")
+
+
+    # lat and long methods
