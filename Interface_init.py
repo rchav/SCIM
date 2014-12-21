@@ -22,25 +22,24 @@ class interface(Tkinter.Tk):
     def initialize(self):
         self.grid()
 
-        self.textboxFont = tkFont.Font(family="Helvetica", size=12)
-        self.labelFont = tkFont.Font(family="Helvetica", size = 13, weight="bold")
+        self.textboxFont = tkFont.Font(family="Constantia", size=12)
+        self.labelFont = tkFont.Font(family="Constantia", size = 12, weight='bold')
 
-        # label bar on top of window
+        # title bar on top of window
         titleVariable = Tkinter.StringVar()
         titleVariable.set(u"   Welcome to SCIM   ")
-        titleLabel = Tkinter.Label(self,textvariable=titleVariable, anchor="w", fg="white",bg="#0154a0",font="Constantia 12 bold")
+        titleLabel = Tkinter.Label(self,textvariable=titleVariable, anchor="w", fg="white",bg="#0154a0",font="Constantia 16")
         titleLabel.grid(column=0,row=0,columnspan=4,sticky='EW')
-
 
         # status bar on bottom of window
         self.statusVariable = Tkinter.StringVar()
         self.statusLabel = Tkinter.Label(self,textvariable=self.statusVariable, anchor="w", fg="#f6731b",bg="#0154a0",font="Constantia 11")
         self.statusLabel.grid(column=0,row=100,columnspan=4,sticky='EW')
 
-
+        ## Location Name ##
         # location name entry box and label
         self.locationVariable = Tkinter.StringVar()
-        self.locationEntry = Tkinter.Entry(self, textvariable = self.locationVariable, font=self.textboxFont, width=35)
+        self.locationEntry = Tkinter.Entry(self, textvariable = self.locationVariable, font=self.textboxFont, width=48)
         self.locationEntry.insert(0, "Enter location name")
         self.locationEntry.configure(fg="Gray")
         self.locationEntry.grid(column=0,row=2,sticky='W',columnspan=3,padx=5)
@@ -48,10 +47,11 @@ class interface(Tkinter.Tk):
         self.locationEntry.bind("<FocusOut>", self.resetLocationPlaceholder)
 
         locationLabelVar = Tkinter.StringVar()
-        locationLabelVar.set("Camera Location Name: ")
+        locationLabelVar.set("Location Name: ")
         locationLabel = Tkinter.Label(self, textvariable = locationLabelVar, anchor="w", font=self.labelFont)
         locationLabel.grid(column=0,row=1,sticky='W',columnspan=3, pady=7)
 
+        ## Address ##
         # group for address widgets
         addressGroup = Tkinter.LabelFrame(self, bd=0)
         addressGroup.grid(column=0,row=4,sticky='w', padx=5)
@@ -96,28 +96,98 @@ class interface(Tkinter.Tk):
         self.addressStateEntry.grid(column=1,row=7,sticky='W',padx=4)
         self.addressStateEntry.configure(state='readonly')
 
+        ## Coordinates ##
         # group the Lat/Long entry boxes
         geoGroup = Tkinter.LabelFrame(self, bd=0)
         geoGroup.grid(column=1,row=4,rowspan=4,sticky='nw', padx=5)
 
+        # label the coordinates
+        geoLabelVar = Tkinter.StringVar()
+        #geoLabelVar.set("Coordinates:    ")
+        geoLabel = Tkinter.Label(self, textvariable=geoLabelVar, anchor='w', font=self.labelFont)
+        geoLabel.grid(column=1,row=3,sticky='w')
+
         # lat and long boxes (auto pop when address is completed)
         self.latitudeVar = Tkinter.StringVar()
-        self.latitudeEntry = Tkinter.Entry(geoGroup, textvariable=self.latitudeVar, width=10, font=self.textboxFont)
+        self.latitudeEntry = Tkinter.Entry(geoGroup, textvariable=self.latitudeVar, width=20, font=self.textboxFont)
         self.latitudeEntry.grid(column=0,row=2,sticky='w')
         self.latitudeEntry.insert(0, 'Latitude')
         self.latitudeEntry.configure(fg="Gray", state='readonly')
 
         self.longitudeVar = Tkinter.StringVar()
-        self.longitudeEntry = Tkinter.Entry(geoGroup, textvariable=self.longitudeVar, width=10, font=self.textboxFont)
+        self.longitudeEntry = Tkinter.Entry(geoGroup, textvariable=self.longitudeVar, width=20, font=self.textboxFont)
         self.longitudeEntry.grid(column=0,row=4, sticky='w')
         self.longitudeEntry.insert(0, 'Longitude')
         self.longitudeEntry.configure(fg="Gray", state='readonly')
 
-        # label the coordinates
-        geoLabelVar = Tkinter.StringVar()
-        geoLabelVar.set("Geo Coordinates:    ")
-        geoLabel = Tkinter.Label(self, textvariable=geoLabelVar, anchor='w', font=self.labelFont)
-        geoLabel.grid(column=1,row=3,sticky='w')
+        ## Contact information ##
+        # Contact label
+        contactInfoLabelVar = Tkinter.StringVar()
+        contactInfoLabelVar.set("Contact information:")
+        contactInfoLabel = Tkinter.Label(self, textvariable=contactInfoLabelVar, anchor='w',font=self.labelFont)
+        contactInfoLabel.grid(column=0,row=5,sticky='w', pady=7)
+
+        # contact group
+        contactGroup = Tkinter.LabelFrame(self, bd=0)
+        contactGroup.grid(column=0,row=6,columnspan=2,sticky='w',padx=5)
+
+        # first name
+        self.contactFirstNameVar = Tkinter.StringVar()
+        self.contactFirstNameEntry = Tkinter.Entry(contactGroup, textvariable=self.contactFirstNameVar, width=15, font=self.textboxFont)
+        self.contactFirstNameEntry.grid(column=0,row=1,sticky='w')
+        self.contactFirstNameEntry.insert(0, "First name")
+        self.contactFirstNameEntry.configure(fg="Gray")
+        self.contactFirstNameEntry.bind("<FocusIn>", self.clearFirstName)
+        self.contactFirstNameEntry.bind("<FocusOut>", self.resetFirstNamePlaceholder)
+
+        # last name
+        self.contactLastNameVar = Tkinter.StringVar()
+        self.contactLastNameEntry =  Tkinter.Entry(contactGroup, textvariable=self.contactLastNameVar, width=15, font=self.textboxFont)
+        self.contactLastNameEntry.grid(column=1,row=1,columnspan=2,sticky='w',padx=5)
+        self.contactLastNameEntry.insert(0, "Last name")
+        self.contactLastNameEntry.configure(fg="Gray")
+        self.contactLastNameEntry.bind("<FocusIn>", self.clearLastName)
+        self.contactLastNameEntry.bind("<FocusOut>", self.resetLastNamePlaceholder)
+
+        # title
+        self.contactTitleVar = Tkinter.StringVar()
+        self.contactTitleEntry = Tkinter.Entry(contactGroup, textvariable=self.contactTitleVar, width=31, font=self.textboxFont)
+        self.contactTitleEntry.grid(column=0,row=2,columnspan=3,sticky='w')
+        self.contactTitleEntry.insert(0, "Title/rank")
+        self.contactTitleEntry.configure(fg='Gray')
+        self.contactTitleEntry.bind("<FocusIn>", self.clearTitle)
+        self.contactTitleEntry.bind("<FocusOut>", self.resetTitlePlaceholder)
+
+        # email
+        self.contactEmailVar = Tkinter.StringVar()
+        self.contactEmailVar = Tkinter.StringVar()
+        self.contactEmailEntry = Tkinter.Entry(contactGroup, textvariable=self.contactEmailVar, width=31, font=self.textboxFont)
+        self.contactEmailEntry.grid(column=0,row=3,columnspan=3,sticky='w')
+        self.contactEmailEntry.insert(0, "name@domain.com")
+        self.contactEmailEntry.configure(fg='Gray')
+        self.contactEmailEntry.bind("<FocusIn>", self.clearEmail)
+        self.contactEmailEntry.bind("<FocusOut>", self.resetEmailPlaceholder)
+
+        # phone
+        self.contactPhoneVar = Tkinter.StringVar()
+        self.contactPhoneVar = Tkinter.StringVar()
+        self.contactPhoneEntry = Tkinter.Entry(contactGroup, textvariable=self.contactPhoneVar, width=20, font=self.textboxFont)
+        self.contactPhoneEntry.grid(column=0,columnspan=2,row=4,sticky='w')
+        self.contactPhoneEntry.insert(0, "xxx-xxx-xxxx")
+        self.contactPhoneEntry.configure(fg='Gray')
+        self.contactPhoneEntry.bind("<FocusIn>", self.clearPhone)
+        self.contactPhoneEntry.bind("<FocusOut>", self.resetPhonePlaceholder)
+
+        # phone extension
+        self.contactPhoneExtVar = Tkinter.StringVar()
+        self.contactPhoneExtVar = Tkinter.StringVar()
+        self.contactPhoneExtEntry = Tkinter.Entry(contactGroup, textvariable=self.contactPhoneExtVar, width=10, font=self.textboxFont)
+        self.contactPhoneExtEntry.grid(column=2,row=4,sticky='w',padx=5)
+        self.contactPhoneExtEntry.insert(0, "Extension")
+        self.contactPhoneExtEntry.configure(fg='Gray')
+        self.contactPhoneExtEntry.bind("<FocusIn>", self.clearPhoneExt)
+        self.contactPhoneExtEntry.bind("<FocusOut>", self.resetPhoneExtPlaceholder)
+
 
         # date of video recovery setup (row 11-20)
             # label
@@ -128,12 +198,13 @@ class interface(Tkinter.Tk):
 
             # entry box
         self.dateOfRecordingVar = Tkinter.StringVar()
-        self.dateOfRecordingEntry = Tkinter.Entry(self, textvariable=self.dateOfRecordingVar, width=10, font=self.textboxFont)
+        self.dateOfRecordingEntry = Tkinter.Entry(self, textvariable=self.dateOfRecordingVar, width=11, font=self.textboxFont)
         self.dateOfRecordingEntry.grid(column=0, row=12, sticky='w', padx=5)
         self.dateOfRecordingEntry.insert(0, "mm/dd/yyyy")
         self.dateOfRecordingEntry.configure(fg="Gray")
         self.dateOfRecordingEntry.bind("<FocusIn>", self.clearDateOfRecording)
         self.dateOfRecordingEntry.bind("<FocusOut>", self.resetDateOfRecordingPlaceholder)
+
 
         # Camera details multiline box and label
         cameraDetailsLabelVar = Tkinter.StringVar()
@@ -141,28 +212,24 @@ class interface(Tkinter.Tk):
         cameraDetailsLabel = Tkinter.Label(self, textvariable=cameraDetailsLabelVar, anchor='w',font=self.labelFont)
         cameraDetailsLabel.grid(column=0,row=21,sticky='w', pady=7)
 
-
-        self.cameraDetailsText = Tkinter.Text(self, height=4, width=50)
+        self.cameraDetailsText = Tkinter.Text(self, height=4, width=48)
         self.cameraDetailsText.grid(column=0, row=22, sticky='w', columnspan=2, padx=5)
-        self.cameraDetailsText.insert(Tkinter.END, "Cameras face the front desk from the back of the store. High definition footage available.")
+        self.cameraDetailsText.insert(Tkinter.END, "Type description of surveillance area here...")
         self.cameraDetailsText.configure(fg="Gray", font=self.textboxFont, wrap=Tkinter.WORD)
         self.cameraDetailsText.bind("<FocusIn>", self.clearDetails)
         self.cameraDetailsText.bind("<FocusOut>", self.resetDetailsPlaceholder)
+        self.cameraDetailsText.bind("<Tab>", self.focus_next_window)
 
-
-        # setting up window size and other options
+        ## Window size and other options ##
         x = (self.winfo_screenwidth() - self.winfo_reqwidth()) / 2 - 210
         y = (self.winfo_screenheight() - self.winfo_reqheight()) / 2 - 219
-                    
         self.grid_columnconfigure(0,weight=1)
         self.resizable(False,False)
         self.update()
-
         self.geometry("450x600+%d+%d" % (x,y))
 
-
-#Textbox clear and placeholder methods
-    # methods for location name box
+    ## Textbox Methods ##
+    # location name
     def clearLocationName(self, event):
         locationName = self.locationEntry.get()
         if locationName == "Enter location name":
@@ -175,8 +242,7 @@ class interface(Tkinter.Tk):
             self.locationEntry.configure(fg="Gray")
             self.locationEntry.insert(0, "Enter location name")
 
-
-    # methods for street address box
+    # street address
     def clearAddressStreet(self, event):
         street = self.addressStreetEntry.get()
         if street == "123 Street Name":
@@ -189,8 +255,7 @@ class interface(Tkinter.Tk):
             self.addressStreetEntry.configure(fg="Gray")
             self.addressStreetEntry.insert(0, "123 Street Name")
             
-
-    # methods for street line 2 box
+    # street line 2
     def clearAddressLine2(self, event):
         street2 = self.addressLine2Entry.get()
         if street2 == "Apt, suite, etc.":
@@ -203,8 +268,7 @@ class interface(Tkinter.Tk):
             self.addressLine2Entry.configure(fg="Gray")
             self.addressLine2Entry.insert(0, "Apt, suite, etc.")
 
-
-    # methods for date of recording box
+    # date of recording
     def clearDateOfRecording(self, event):
         date = self.dateOfRecordingEntry.get()
         if date == "mm/dd/yyyy":
@@ -217,8 +281,7 @@ class interface(Tkinter.Tk):
             self.dateOfRecordingEntry.configure(fg="Gray")
             self.dateOfRecordingEntry.insert(0, "mm/dd/yyyy")
 
-
-    # methods for camera details text widget
+    # camera details text widget
     def clearDetails(self, event):
         if self.cameraDetailsText.cget('fg') == "Gray":
             self.cameraDetailsText.delete(1.0, Tkinter.END)
@@ -228,7 +291,83 @@ class interface(Tkinter.Tk):
         details = self.cameraDetailsText.get(1.0, Tkinter.END)
         if len(details) == 1:
             self.cameraDetailsText.configure(fg="Gray")
-            self.cameraDetailsText.insert(1.0, "Cameras face the front desk from the back of the store. High definition footage available.")
+            self.cameraDetailsText.insert(1.0, "Type description of surveillance area here...")
 
+    def focus_next_window(self, event):
+        event.widget.tk_focusNext().focus()
+        return("break")
+
+    # contact methods
+    def clearFirstName(self, event):
+        name = self.contactFirstNameEntry.get()
+        if name == "First name":
+            self.contactFirstNameEntry.delete(0, Tkinter.END)
+            self.contactFirstNameEntry.configure(fg="Black")
+
+    def resetFirstNamePlaceholder(self, event):
+        name = self.contactFirstNameEntry.get()
+        if len(name) == 0:
+            self.contactFirstNameEntry.configure(fg="Gray")
+            self.contactFirstNameEntry.insert(0, "First name")
+
+    def clearLastName(self, event):
+        name = self.contactLastNameEntry.get()
+        if name == "Last name":
+            self.contactLastNameEntry.delete(0, Tkinter.END)
+            self.contactLastNameEntry.configure(fg="Black")
+
+    def resetLastNamePlaceholder(self, event):
+        name = self.contactLastNameEntry.get()
+        if len(name) == 0:
+            self.contactLastNameEntry.configure(fg="Gray")
+            self.contactLastNameEntry.insert(0, "Last name")
+
+    def clearTitle(self, event):
+        title = self.contactTitleEntry.get()
+        if title == "Title/rank":
+            self.contactTitleEntry.delete(0, Tkinter.END)
+            self.contactTitleEntry.configure(fg='Black')
+
+    def resetTitlePlaceholder(self, event):
+        title = self.contactTitleEntry.get()
+        if len(title) == 0:
+            self.contactTitleEntry.configure(fg="Gray")
+            self.contactTitleEntry.insert(0, "Title/rank")
+
+    def clearEmail(self, event):
+        email = self.contactEmailEntry.get()
+        if email == "name@domain.com":
+            self.contactEmailEntry.delete(0, Tkinter.END)
+            self.contactEmailEntry.configure(fg='Black')
+
+    def resetEmailPlaceholder(self, event):
+        email = self.contactEmailEntry.get()
+        if len(email) == 0:
+            self.contactEmailEntry.configure(fg="Gray")
+            self.contactEmailEntry.insert(0, "name@domain.com")
+
+    def clearPhone(self, event):
+        phone = self.contactPhoneEntry.get()
+        if phone == "xxx-xxx-xxxx":
+            self.contactPhoneEntry.delete(0, Tkinter.END)
+            self.contactPhoneEntry.configure(fg='Black')
+
+    def resetPhonePlaceholder(self, event):
+        phone = self.contactPhoneEntry.get()
+        if len(phone) == 0:
+            self.contactPhoneEntry.configure(fg="Gray")
+            self.contactPhoneEntry.insert(0, "xxx-xxx-xxxx")
+
+    def clearPhoneExt(self, event):
+        phoneExt = self.contactPhoneExtEntry.get()
+        if phoneExt == "Extension":
+            self.contactPhoneExtEntry.delete(0, Tkinter.END)
+            self.contactPhoneExtEntry.configure(fg='Black')
+
+    def resetPhoneExtPlaceholder(self, event):
+        phoneExt = self.contactPhoneExtEntry.get()
+        if len(phoneExt) == 0:
+            self.contactPhoneExtEntry.configure(fg="Gray")
+            self.contactPhoneExtEntry.insert(0, "Extension")
 
     # lat and long methods
