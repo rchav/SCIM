@@ -52,6 +52,9 @@ class interface(Tkinter.Tk):
         locationLabel = Tkinter.Label(self, textvariable = locationLabelVar, anchor="w", font=self.labelFont)
         locationLabel.grid(column=0,row=1,sticky='W',columnspan=3)
 
+        addressGroup = Tkinter.LabelFrame(self, text="Address", padx=5)
+        
+
         # Address vars
         self.addressStreetVar = Tkinter.StringVar()
         self.addressLine2Var = Tkinter.StringVar()
@@ -83,7 +86,7 @@ class interface(Tkinter.Tk):
         
         # address state
         self.addressStateEntry = Tkinter.Entry(self, textvariable = self.addressStateVar, width=3, font=self.textboxFont, bg="#767676")
-        self.addressStateEntry.grid(column=0,row=7,sticky='W',padx=158)
+        self.addressStateEntry.grid(column=1,row=7,sticky='W',columnspan=3)
         self.addressStateEntry.configure(state='readonly')
 
         # Address label
@@ -91,6 +94,11 @@ class interface(Tkinter.Tk):
         addressLabelVar.set("Address: ")
         addressLabel = Tkinter.Label(self, textvariable = addressLabelVar, anchor='w', font=self.labelFont)
         addressLabel.grid(column=0,row=3, sticky='w')
+
+        # lat and long boxes (auto pop when address is completed)
+        self.latitudeVar = Tkinter.StringVar()
+        self.latitudeEntry = Tkinter.Entry(self, textvariable=self.latitudeVar, width=19, font=self.textboxFont)
+        self.latitudeEntry.grid(column=3,row=5,sticky='w')
 
 
         # date of video recovery setup (row 11-20)
@@ -109,7 +117,19 @@ class interface(Tkinter.Tk):
         self.dateOfRecordingEntry.bind("<FocusIn>", self.clearDateOfRecording)
         self.dateOfRecordingEntry.bind("<FocusOut>", self.resetDateOfRecordingPlaceholder)
 
+        # Camera details multiline box and label
+        cameraDetailsLabelVar = Tkinter.StringVar()
+        cameraDetailsLabelVar.set("Camera surveillance details:")
+        cameraDetailsLabel = Tkinter.Label(self, textvariable=cameraDetailsLabelVar, anchor='w',font=self.labelFont)
+        cameraDetailsLabel.grid(column=0,row=21,sticky='w')
 
+
+        self.cameraDetailsText = Tkinter.Text(self, height=4, width=50)
+        self.cameraDetailsText.grid(column=0, row=22, sticky='w', padx=5)
+        self.cameraDetailsText.insert(Tkinter.END, "Cameras face the front desk from the back of the store. High definition footage available.")
+        self.cameraDetailsText.configure(fg="Gray", font=self.textboxFont, wrap=Tkinter.WORD)
+        self.cameraDetailsText.bind("<FocusIn>", self.clearDetails)
+        self.cameraDetailsText.bind("<FocusOut>", self.resetDetailsPlaceholder)
 
 
         # setting up window size and other options
@@ -178,3 +198,16 @@ class interface(Tkinter.Tk):
         if len(date) == 0:
             self.dateOfRecordingEntry.configure(fg="Gray")
             self.dateOfRecordingEntry.insert(0, "mm/dd/yyyy")
+
+
+    # methods for camera details text widget
+    def clearDetails(self, event):
+        if self.cameraDetailsText.cget('fg') == "Gray":
+            self.cameraDetailsText.delete(1.0, Tkinter.END)
+            self.cameraDetailsText.configure(fg="Black")
+
+    def resetDetailsPlaceholder(self, event):
+        details = self.cameraDetailsText.get(1.0, Tkinter.END)
+        if len(details) == 1:
+            self.cameraDetailsText.configure(fg="Gray")
+            self.cameraDetailsText.insert(1.0, "Cameras face the front desk from the back of the store. High definition footage available.")
