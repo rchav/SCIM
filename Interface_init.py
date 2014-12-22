@@ -24,11 +24,12 @@ class interface(Tkinter.Tk):
 
         self.textboxFont = tkFont.Font(family="Constantia", size=12)
         self.labelFont = tkFont.Font(family="Constantia", size = 12, weight='bold')
+        self.smallLabelFont = tkFont.Font(family="Constantia", size=11)
 
         # title bar on top of window
         titleVariable = Tkinter.StringVar()
-        titleVariable.set(u"   Welcome to SCIM   ")
-        titleLabel = Tkinter.Label(self,textvariable=titleVariable, anchor="w", fg="white",bg="#0154a0",font="Constantia 16")
+        titleVariable.set(u"SCIM: Add a new camera")
+        titleLabel = Tkinter.Label(self,textvariable=titleVariable, fg="white",bg="#0154a0",font="Constantia 16")
         titleLabel.grid(column=0,row=0,columnspan=4,sticky='EW')
 
         # status bar on bottom of window
@@ -189,36 +190,69 @@ class interface(Tkinter.Tk):
         self.contactPhoneExtEntry.bind("<FocusOut>", self.resetPhoneExtPlaceholder)
 
 
-        # date of video recovery setup (row 11-20)
-            # label
-        dateOfRecordingLabelVar = Tkinter.StringVar()
-        dateOfRecordingLabelVar.set("Date of video recording: ")
-        dateOfRecordingLabel = Tkinter.Label(self, textvariable=dateOfRecordingLabelVar, anchor='w', font=self.labelFont)
-        dateOfRecordingLabel.grid(column=0, row=11, sticky='w', pady=7)
-
-            # entry box
-        self.dateOfRecordingVar = Tkinter.StringVar()
-        self.dateOfRecordingEntry = Tkinter.Entry(self, textvariable=self.dateOfRecordingVar, width=11, font=self.textboxFont)
-        self.dateOfRecordingEntry.grid(column=0, row=12, sticky='w', padx=5)
-        self.dateOfRecordingEntry.insert(0, "mm/dd/yyyy")
-        self.dateOfRecordingEntry.configure(fg="Gray")
-        self.dateOfRecordingEntry.bind("<FocusIn>", self.clearDateOfRecording)
-        self.dateOfRecordingEntry.bind("<FocusOut>", self.resetDateOfRecordingPlaceholder)
-
+        ## Camera Details ##
+        # details frame
+        detailsFrame = Tkinter.LabelFrame(self, bd=0)
+        detailsFrame.grid(column=0,row=12,columnspan=2,padx=5)
 
         # Camera details multiline box and label
         cameraDetailsLabelVar = Tkinter.StringVar()
         cameraDetailsLabelVar.set("Camera surveillance details:")
         cameraDetailsLabel = Tkinter.Label(self, textvariable=cameraDetailsLabelVar, anchor='w',font=self.labelFont)
-        cameraDetailsLabel.grid(column=0,row=21,sticky='w', pady=7)
+        cameraDetailsLabel.grid(column=0,row=11,sticky='w', pady=7)
 
-        self.cameraDetailsText = Tkinter.Text(self, height=4, width=48)
-        self.cameraDetailsText.grid(column=0, row=22, sticky='w', columnspan=2, padx=5)
+        # external cameras
+        self.numExternalVar = Tkinter.StringVar()
+        self.numExternalEntry = Tkinter.Entry(detailsFrame, textvariable=self.numExternalVar, width=3,font=self.textboxFont)
+        self.numExternalEntry.grid(column=0,row=1,sticky='w')
+        self.numExternalEntry.insert(0, 0)
+        self.numExternalEntry.configure(fg="Gray")
+        self.numExternalEntry.bind("<FocusIn>", self.clearExternal)
+        self.numExternalEntry.bind("<FocusOut>", self.resetExternalPlaceholder)
+        
+        externalLabelVar = Tkinter.StringVar()
+        externalLabelVar.set("External cameras")
+        externalLabel = Tkinter.Label(detailsFrame, textvariable=externalLabelVar, anchor='w', font=self.smallLabelFont)
+        externalLabel.grid(column=0, row=1, sticky='w', padx=30)
+
+        # internal cameras
+        self.numInternalVar = Tkinter.StringVar()
+        self.numInternalEntry = Tkinter.Entry(detailsFrame, textvariable=self.numInternalVar, width=3,font=self.textboxFont)
+        self.numInternalEntry.grid(column=1,row=1,sticky='w')
+        self.numInternalEntry.insert(0, 0)
+        self.numInternalEntry.configure(fg="Gray")
+        self.numInternalEntry.bind("<FocusIn>", self.clearInternal)
+        self.numInternalEntry.bind("<FocusOut>", self.resetInternalPlaceholder)
+
+        internalLabelVar = Tkinter.StringVar()
+        internalLabelVar.set("Internal cameras")
+        internalLabel = Tkinter.Label(detailsFrame, textvariable=internalLabelVar, anchor='w', font=self.smallLabelFont)
+        internalLabel.grid(column=1, row=1, sticky='w', padx=30)
+
+        self.cameraDetailsText = Tkinter.Text(detailsFrame, height=4, width=48)
+        self.cameraDetailsText.grid(column=0, row=3, sticky='w', columnspan=2)
         self.cameraDetailsText.insert(Tkinter.END, "Type description of surveillance area here...")
         self.cameraDetailsText.configure(fg="Gray", font=self.textboxFont, wrap=Tkinter.WORD)
         self.cameraDetailsText.bind("<FocusIn>", self.clearDetails)
         self.cameraDetailsText.bind("<FocusOut>", self.resetDetailsPlaceholder)
         self.cameraDetailsText.bind("<Tab>", self.focus_next_window)
+
+        # date of video recovery setup (row 11-20)
+            # label
+        dateOfRecordingLabelVar = Tkinter.StringVar()
+        dateOfRecordingLabelVar.set("Date of video recording: ")
+        dateOfRecordingLabel = Tkinter.Label(self, textvariable=dateOfRecordingLabelVar, anchor='w', font=self.labelFont)
+        dateOfRecordingLabel.grid(column=0, row=15, sticky='w', pady=7)
+
+            # entry box
+        self.dateOfRecordingVar = Tkinter.StringVar()
+        self.dateOfRecordingEntry = Tkinter.Entry(self, textvariable=self.dateOfRecordingVar, width=11, font=self.textboxFont)
+        self.dateOfRecordingEntry.grid(column=0, row=16, sticky='w', padx=5)
+        self.dateOfRecordingEntry.insert(0, "mm/dd/yyyy")
+        self.dateOfRecordingEntry.configure(fg="Gray")
+        self.dateOfRecordingEntry.bind("<FocusIn>", self.clearDateOfRecording)
+        self.dateOfRecordingEntry.bind("<FocusOut>", self.resetDateOfRecordingPlaceholder)
+
 
         ## Window size and other options ##
         x = (self.winfo_screenwidth() - self.winfo_reqwidth()) / 2 - 210
@@ -369,5 +403,30 @@ class interface(Tkinter.Tk):
         if len(phoneExt) == 0:
             self.contactPhoneExtEntry.configure(fg="Gray")
             self.contactPhoneExtEntry.insert(0, "Extension")
+
+    # internal, external
+    def clearInternal(self,event):
+        intr = self.numInternalEntry.get()
+        if intr == "0":
+            self.numInternalEntry.delete(0, Tkinter.END) 
+            self.numInternalEntry.configure(fg="Black")
+
+    def resetInternalPlaceholder(self,event):
+        intr = self.numInternalEntry.get()
+        if len(intr) == 0:
+            self.numInternalEntry.configure(fg="Gray")
+            self.numInternalEntry.insert(0, 0)
+
+    def clearExternal(self,event):
+        ext = self.numExternalEntry.get()
+        if ext == "0":
+            self.numExternalEntry.delete(0, Tkinter.END) 
+            self.numExternalEntry.configure(fg="Black")
+            
+    def resetExternalPlaceholder(self,event):
+        ext = self.numExternalEntry.get()
+        if len(ext) == 0:
+            self.numExternalEntry.configure(fg="Gray")
+            self.numExternalEntry.insert(0, 0)
 
     # lat and long methods
