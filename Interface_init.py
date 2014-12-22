@@ -25,6 +25,7 @@ class interface(Tkinter.Tk):
         self.textboxFont = tkFont.Font(family="Constantia", size=12)
         self.labelFont = tkFont.Font(family="Constantia", size = 12, weight='bold')
         self.smallLabelFont = tkFont.Font(family="Constantia", size=11)
+        self.statusFont = tkFont.Font(family="Constantia", size=10, weight='bold')
 
         # title bar on top of window
         titleVariable = Tkinter.StringVar()
@@ -34,7 +35,8 @@ class interface(Tkinter.Tk):
 
         # status bar on bottom of window
         self.statusVariable = Tkinter.StringVar()
-        self.statusLabel = Tkinter.Label(self,textvariable=self.statusVariable, anchor="w", fg="#f6731b",bg="#0154a0",font="Constantia 11")
+        self.statusVariable.set("Crime Strategies Unit")
+        self.statusLabel = Tkinter.Label(self,textvariable=self.statusVariable, fg="White",bg="#0154a0",font=self.statusFont)
         self.statusLabel.grid(column=0,row=100,columnspan=4,sticky='EW')
 
         ## Location Name ##
@@ -229,6 +231,15 @@ class interface(Tkinter.Tk):
         internalLabel = Tkinter.Label(detailsFrame, textvariable=internalLabelVar, anchor='w', font=self.smallLabelFont)
         internalLabel.grid(column=1, row=1, sticky='w', padx=30)
 
+        # retention length
+        choices = range(1,32)
+        choices.insert(0," ")
+        self.retentionVar = Tkinter.StringVar()
+        self.retentionVar.set(" ")
+        self.retentionOption = Tkinter.OptionMenu(detailsFrame, self.retentionVar, *choices)
+        self.retentionOption.grid(column=0, row=2, stick='w')
+
+        # camera details free text
         self.cameraDetailsText = Tkinter.Text(detailsFrame, height=4, width=48)
         self.cameraDetailsText.grid(column=0, row=3, sticky='w', columnspan=2)
         self.cameraDetailsText.insert(Tkinter.END, "Type description of surveillance area here...")
