@@ -66,7 +66,8 @@ class interface(Tkinter.Tk):
         self.locationEntry.insert(0, "Enter location name")
         self.locationEntry.configure(fg="Gray")
         self.locationEntry.grid(column=0,row=2,columnspan=3)
-        self.locationEntry.bind("<FocusIn>", self.clearLocationName)
+        self.locationEntry.bind("<KeyPress>", self.clearLocationName)
+        self.locationEntry.bind("<FocusIn>", self.resetLocationNameCursor)
         self.locationEntry.bind("<FocusOut>", self.resetLocationPlaceholder)
 
         locationLabelVar = Tkinter.StringVar()
@@ -97,6 +98,7 @@ class interface(Tkinter.Tk):
         self.addressStreetEntry.configure(fg="Gray")
         self.addressStreetEntry.grid(column=0,row=5,sticky='W', columnspan=2)
         self.addressStreetEntry.bind("<KeyPress>", self.clearAddressStreet)
+        self.addressStreetEntry.bind("<FocusIn>", self.resetAddressStreetCursor)
         self.addressStreetEntry.bind("<FocusOut>", self.resetAddressStreetPlaceholder)
 
         # address 2nd line
@@ -105,6 +107,7 @@ class interface(Tkinter.Tk):
         self.addressLine2Entry.insert(0, "Apt, suite, etc.")
         self.addressLine2Entry.configure(fg="Gray")
         self.addressLine2Entry.bind("<KeyPress>", self.clearAddressLine2)
+        self.addressLine2Entry.bind("<FocusIn>", self.resetAddressLine2Cursor)
         self.addressLine2Entry.bind("<FocusOut>", self.resetAddressLine2Placeholder)
 
         # address city
@@ -113,6 +116,7 @@ class interface(Tkinter.Tk):
         self.addressCityEntry.insert(0, "City")
         self.addressCityEntry.configure(fg="Gray")
         self.addressCityEntry.bind("<KeyPress>", self.clearAddressCity)
+        self.addressCityEntry.bind("<FocusIn>", self.resetAddressCityCursor)
         self.addressCityEntry.bind("<FocusOut>", self.resetAddressCityPlaceholder)
         
         # address state
@@ -121,6 +125,7 @@ class interface(Tkinter.Tk):
         self.addressStateEntry.insert(0, "XX")
         self.addressStateEntry.configure(fg="Gray")
         self.addressStateEntry.bind("<KeyPress>", self.clearAddressState)
+        self.addressStateEntry.bind("<FocusIn>", self.resetAddressStateCursor)
         self.addressStateEntry.bind("<FocusOut>", self.resetAddressStatePlaceholder)
 
         ## Coordinates ##
@@ -155,6 +160,7 @@ class interface(Tkinter.Tk):
         self.contactFirstNameEntry.insert(0, "First name")
         self.contactFirstNameEntry.configure(fg="Gray")
         self.contactFirstNameEntry.bind("<KeyPress>", self.clearFirstName)
+        self.contactFirstNameEntry.bind("<FocusIn>", self.resetFirstNameCursor)
         self.contactFirstNameEntry.bind("<FocusOut>", self.resetFirstNamePlaceholder)
 
         # last name
@@ -164,6 +170,7 @@ class interface(Tkinter.Tk):
         self.contactLastNameEntry.insert(0, "Last name")
         self.contactLastNameEntry.configure(fg="Gray")
         self.contactLastNameEntry.bind("<KeyPress>", self.clearLastName)
+        self.contactLastNameEntry.bind("<FocusIn>", self.resetLastNameCursor)
         self.contactLastNameEntry.bind("<FocusOut>", self.resetLastNamePlaceholder)
 
         # title
@@ -173,6 +180,7 @@ class interface(Tkinter.Tk):
         self.contactTitleEntry.insert(0, "Title/rank")
         self.contactTitleEntry.configure(fg='Gray')
         self.contactTitleEntry.bind("<KeyPress>", self.clearTitle)
+        self.contactTitleEntry.bind("<FocusIn>", self.resetTitleCursor)
         self.contactTitleEntry.bind("<FocusOut>", self.resetTitlePlaceholder)
 
         # email
@@ -183,6 +191,7 @@ class interface(Tkinter.Tk):
         self.contactEmailEntry.insert(0, "name@domain.com")
         self.contactEmailEntry.configure(fg='Gray')
         self.contactEmailEntry.bind("<KeyPress>", self.clearEmail)
+        self.contactEmailEntry.bind("<FocusIn>", self.resetEmailCursor)
         self.contactEmailEntry.bind("<FocusOut>", self.resetEmailPlaceholder)
 
         # phone
@@ -193,6 +202,7 @@ class interface(Tkinter.Tk):
         self.contactPhoneEntry.insert(0, "xxx-xxx-xxxx")
         self.contactPhoneEntry.configure(fg='Gray')
         self.contactPhoneEntry.bind("<KeyPress>", self.clearPhone)
+        self.contactPhoneEntry.bind("<FocusIn>", self.resetPhoneCursor)
         self.contactPhoneEntry.bind("<FocusOut>", self.resetPhonePlaceholder)
 
         # phone extension
@@ -203,6 +213,7 @@ class interface(Tkinter.Tk):
         self.contactPhoneExtEntry.insert(0, "Extension")
         self.contactPhoneExtEntry.configure(fg='Gray')
         self.contactPhoneExtEntry.bind("<KeyPress>", self.clearPhoneExt)
+        self.contactPhoneExtEntry.bind("<FocusIn>", self.resetPhoneExtCursor)
         self.contactPhoneExtEntry.bind("<FocusOut>", self.resetPhoneExtPlaceholder)
 
 
@@ -224,6 +235,7 @@ class interface(Tkinter.Tk):
         self.numExternalEntry.insert(0, 0)
         self.numExternalEntry.configure(fg="Gray")
         self.numExternalEntry.bind("<KeyPress>", self.clearExternal)
+        self.numExternalEntry.bind("<FocusIn>", self.resetExternalCursor)
         self.numExternalEntry.bind("<FocusOut>", self.resetExternalPlaceholder)
         
         externalLabelVar = Tkinter.StringVar()
@@ -238,6 +250,7 @@ class interface(Tkinter.Tk):
         self.numInternalEntry.insert(0, 0)
         self.numInternalEntry.configure(fg="Gray")
         self.numInternalEntry.bind("<KeyPress>", self.clearInternal)
+        self.numInternalEntry.bind("<FocusIn>", self.resetInternalCursor)
         self.numInternalEntry.bind("<FocusOut>", self.resetInternalPlaceholder)
 
         internalLabelVar = Tkinter.StringVar()
@@ -251,6 +264,7 @@ class interface(Tkinter.Tk):
         self.cameraDetailsText.insert(Tkinter.END, "Type description of surveillance area here...")
         self.cameraDetailsText.configure(fg="Gray", font=self.textboxFont, wrap=Tkinter.WORD)
         self.cameraDetailsText.bind("<KeyPress>", self.clearDetails)
+        self.cameraDetailsText.bind("<FocusIn>", self.resetDetailsCursor)
         self.cameraDetailsText.bind("<FocusOut>", self.resetDetailsPlaceholder)
         self.cameraDetailsText.bind("<Tab>", self.focus_next_window)
 
@@ -372,7 +386,8 @@ class interface(Tkinter.Tk):
         self.startDateOfRecordingEntry.grid(column=1, row=1, sticky='w')
         self.startDateOfRecordingEntry.insert(0, "mm/dd/yyyy")
         self.startDateOfRecordingEntry.configure(fg="Gray")
-        self.startDateOfRecordingEntry.bind("<FocusIn>", self.clearStartDateOfRecording)
+        self.startDateOfRecordingEntry.bind("<KeyPress>", self.clearStartDateOfRecording)
+        self.startDateOfRecordingEntry.bind("<FocusIn>", self.resetStartDateOfRecordingCursor)
         self.startDateOfRecordingEntry.bind("<FocusOut>", self.resetStartDateOfRecordingPlaceholder)
         
         # end date label
@@ -387,7 +402,8 @@ class interface(Tkinter.Tk):
         self.endDateOfRecordingEntry.grid(column=3, row=1, sticky='w')
         self.endDateOfRecordingEntry.insert(0, "mm/dd/yyyy")
         self.endDateOfRecordingEntry.configure(fg="Gray")
-        self.endDateOfRecordingEntry.bind("<FocusIn>", self.clearEndDateOfRecording)
+        self.endDateOfRecordingEntry.bind("<KeyPress>", self.clearEndDateOfRecording)
+        self.endDateOfRecordingEntry.bind("<FocusIn>", self.resetEndDateOfRecordingCursor)
         self.endDateOfRecordingEntry.bind("<FocusOut>", self.resetEndDateOfRecordingPlaceholder)
 
         # start time of video label
@@ -402,7 +418,8 @@ class interface(Tkinter.Tk):
         self.startTimeOfRecordingEntry.grid(column=1, row=2, sticky='w')
         self.startTimeOfRecordingEntry.insert(0, "hh:mm:ss")
         self.startTimeOfRecordingEntry.configure(fg="Gray")
-        self.startTimeOfRecordingEntry.bind("<FocusIn>", self.clearStartTimeOfRecording)
+        self.startTimeOfRecordingEntry.bind("<KeyPress>", self.clearStartTimeOfRecording)
+        self.startTimeOfRecordingEntry.bind("<FocusIn>", self.resetStartTimeOfRecordingCursor)
         self.startTimeOfRecordingEntry.bind("<FocusOut>", self.resetStartTimeOfRecordingPlaceholder)
 
         # end time of video label
@@ -417,7 +434,8 @@ class interface(Tkinter.Tk):
         self.endTimeOfRecordingEntry.grid(column=3, row=2, sticky='w')
         self.endTimeOfRecordingEntry.insert(0, "hh:mm:ss")
         self.endTimeOfRecordingEntry.configure(fg="Gray")
-        self.endTimeOfRecordingEntry.bind("<FocusIn>", self.clearEndTimeOfRecording)
+        self.endTimeOfRecordingEntry.bind("<KeyPress>", self.clearEndTimeOfRecording)
+        self.endTimeOfRecordingEntry.bind("<FocusIn>", self.resetEndTimeOfRecordingCursor)
         self.endTimeOfRecordingEntry.bind("<FocusOut>", self.resetEndTimeOfRecordingPlaceholder)
 
         # recovery date label
@@ -432,7 +450,8 @@ class interface(Tkinter.Tk):
         self.recoveryDateEntry.grid(column=1, row=3, columnspan=2, sticky='w', padx=28)
         self.recoveryDateEntry.insert(0, "mm/dd/yyyy")
         self.recoveryDateEntry.configure(fg="Gray")
-        self.recoveryDateEntry.bind("<FocusIn>", self.clearRecoveryDate)
+        self.recoveryDateEntry.bind("<KeyPress>", self.clearRecoveryDate)
+        self.recoveryDateEntry.bind("<FocusIn>", self.resetRecoveryDateCursor)
         self.recoveryDateEntry.bind("<FocusOut>", self.resetRecoveryDatePlaceholder)
 
     ## Textbox Methods ##
@@ -449,6 +468,10 @@ class interface(Tkinter.Tk):
             self.locationEntry.configure(fg="Gray")
             self.locationEntry.insert(0, "Enter location name")
 
+    def resetLocationNameCursor(self,event):
+        if self.locationEntry.cget('fg') == "Gray":
+            self.locationEntry.icursor(0)
+
     # street address
     def clearAddressStreet(self, event):
         street = self.addressStreetEntry.get()
@@ -461,7 +484,11 @@ class interface(Tkinter.Tk):
         if len(street) == 0:
             self.addressStreetEntry.configure(fg="Gray")
             self.addressStreetEntry.insert(0, "123 Street Name")
-            
+    
+    def resetAddressStreetCursor(self,event):
+        if self.addressStreetEntry.cget('fg') == "Gray":
+            self.addressStreetEntry.icursor(0)
+
     # street line 2
     def clearAddressLine2(self, event):
         street2 = self.addressLine2Entry.get()
@@ -475,6 +502,10 @@ class interface(Tkinter.Tk):
             self.addressLine2Entry.configure(fg="Gray")
             self.addressLine2Entry.insert(0, "Apt, suite, etc.")
     
+    def resetAddressLine2Cursor(self,event):
+        if self.addressLine2Entry.cget('fg') == "Gray":
+            self.addressLine2Entry.icursor(0)
+
     # city
     def clearAddressCity(self, event):
         city = self.addressCityEntry.get()
@@ -487,6 +518,10 @@ class interface(Tkinter.Tk):
         if len(city) == 0:
             self.addressCityEntry.configure(fg="Gray")
             self.addressCityEntry.insert(0, "City")
+
+    def resetAddressCityCursor(self,event):
+        if self.addressCityEntry.cget('fg') == "Gray":
+            self.addressCityEntry.icursor(0)
 
     # state
     def clearAddressState(self, event):
@@ -501,6 +536,10 @@ class interface(Tkinter.Tk):
             self.addressStateEntry.configure(fg="Gray")
             self.addressStateEntry.insert(0, "XX")
 
+    def resetAddressStateCursor(self,event):
+        if self.addressStateEntry.cget('fg') == "Gray":
+            self.addressStateEntry.icursor(0)
+
     # date of recording
     def clearStartDateOfRecording(self, event):
         date = self.startDateOfRecordingEntry.get()
@@ -514,6 +553,10 @@ class interface(Tkinter.Tk):
             self.startDateOfRecordingEntry.configure(fg="Gray")
             self.startDateOfRecordingEntry.insert(0, "mm/dd/yyyy")
 
+    def resetStartDateOfRecordingCursor(self,event):
+        if self.startDateOfRecordingEntry.cget('fg') == "Gray":
+            self.startDateOfRecordingEntry.icursor(0)
+
     def clearEndDateOfRecording(self, event):
         date = self.endDateOfRecordingEntry.get()
         if date == "mm/dd/yyyy":
@@ -525,6 +568,10 @@ class interface(Tkinter.Tk):
         if len(date) == 0:
             self.endDateOfRecordingEntry.configure(fg="Gray")
             self.endDateOfRecordingEntry.insert(0, "mm/dd/yyyy")
+
+    def resetEndDateOfRecordingCursor(self,event):
+        if self.endDateOfRecordingEntry.cget('fg') == "Gray":
+            self.endDateOfRecordingEntry.icursor(0)
 
     # time of recording
     def clearStartTimeOfRecording(self, event):
@@ -539,6 +586,10 @@ class interface(Tkinter.Tk):
             self.startTimeOfRecordingEntry.configure(fg="Gray")
             self.startTimeOfRecordingEntry.insert(0, "hh:mm:ss")
 
+    def resetStartTimeOfRecordingCursor(self,event):
+        if self.startTimeOfRecordingEntry.cget('fg') == "Gray":
+            self.startTimeOfRecordingEntry.icursor(0)
+
     def clearEndTimeOfRecording(self, event):
         time = self.endTimeOfRecordingEntry.get()
         if time == "hh:mm:ss":
@@ -550,7 +601,11 @@ class interface(Tkinter.Tk):
         if len(time) == 0:
             self.endTimeOfRecordingEntry.configure(fg="Gray")
             self.endTimeOfRecordingEntry.insert(0, "hh:mm:ss")
-    
+
+    def resetEndTimeOfRecordingCursor(self,event):
+        if self.endTimeOfRecordingEntry.cget('fg') == "Gray":
+            self.endTimeOfRecordingEntry.icursor(0)
+
     # date of recording
     def clearRecoveryDate(self, event):
         date = self.recoveryDateEntry.get()
@@ -563,6 +618,10 @@ class interface(Tkinter.Tk):
         if len(date) == 0:
             self.recoveryDateEntry.configure(fg="Gray")
             self.recoveryDateEntry.insert(0, "mm/dd/yyyy")
+
+    def resetRecoveryDateCursor(self,event):
+        if self.recoveryDateEntry.cget('fg') == "Gray":
+            self.recoveryDateEntry.icursor(0)
 
 
     # camera details text widget
@@ -581,6 +640,10 @@ class interface(Tkinter.Tk):
         event.widget.tk_focusNext().focus()
         return("break")
 
+    def resetDetailsCursor(self,event):
+        if self.cameraDetailsText.cget('fg') == "Gray":
+            self.cameraDetailsText.mark_set("insert", 1.0)
+
     # contact methods
     def clearFirstName(self, event):
         name = self.contactFirstNameEntry.get()
@@ -593,6 +656,10 @@ class interface(Tkinter.Tk):
         if len(name) == 0:
             self.contactFirstNameEntry.configure(fg="Gray")
             self.contactFirstNameEntry.insert(0, "First name")
+    
+    def resetFirstNameCursor(self,event):
+        if self.contactFirstNameEntry.cget('fg') == "Gray":
+            self.contactFirstNameEntry.icursor(0)
 
     def clearLastName(self, event):
         name = self.contactLastNameEntry.get()
@@ -606,6 +673,10 @@ class interface(Tkinter.Tk):
             self.contactLastNameEntry.configure(fg="Gray")
             self.contactLastNameEntry.insert(0, "Last name")
 
+    def resetLastNameCursor(self,event):
+        if self.contactLastNameEntry.cget('fg') == "Gray":
+            self.contactLastNameEntry.icursor(0)
+
     def clearTitle(self, event):
         title = self.contactTitleEntry.get()
         if title == "Title/rank":
@@ -617,6 +688,10 @@ class interface(Tkinter.Tk):
         if len(title) == 0:
             self.contactTitleEntry.configure(fg="Gray")
             self.contactTitleEntry.insert(0, "Title/rank")
+
+    def resetTitleCursor(self,event):
+        if self.contactTitleEntry.cget('fg') == "Gray":
+            self.contactTitleEntry.icursor(0)
 
     def clearEmail(self, event):
         email = self.contactEmailEntry.get()
@@ -630,6 +705,10 @@ class interface(Tkinter.Tk):
             self.contactEmailEntry.configure(fg="Gray")
             self.contactEmailEntry.insert(0, "name@domain.com")
 
+    def resetEmailCursor(self,event):
+        if self.contactEmailEntry.cget('fg') == "Gray":
+            self.contactEmailEntry.icursor(0)
+
     def clearPhone(self, event):
         phone = self.contactPhoneEntry.get()
         if phone == "xxx-xxx-xxxx":
@@ -642,6 +721,10 @@ class interface(Tkinter.Tk):
             self.contactPhoneEntry.configure(fg="Gray")
             self.contactPhoneEntry.insert(0, "xxx-xxx-xxxx")
 
+    def resetPhoneCursor(self,event):
+        if self.contactPhoneEntry.cget('fg') == "Gray":
+            self.contactPhoneEntry.icursor(0)
+
     def clearPhoneExt(self, event):
         phoneExt = self.contactPhoneExtEntry.get()
         if phoneExt == "Extension":
@@ -653,6 +736,10 @@ class interface(Tkinter.Tk):
         if len(phoneExt) == 0:
             self.contactPhoneExtEntry.configure(fg="Gray")
             self.contactPhoneExtEntry.insert(0, "Extension")
+
+    def resetPhoneExtCursor(self,event):
+        if self.contactPhoneExtEntry.cget('fg') == "Gray":
+            self.contactPhoneExtEntry.icursor(0)
 
     # internal, external
     def clearInternal(self,event):
@@ -667,6 +754,10 @@ class interface(Tkinter.Tk):
             self.numInternalEntry.configure(fg="Gray")
             self.numInternalEntry.insert(0, 0)
 
+    def resetInternalCursor(self,event):
+        if self.numInternalEntry.cget('fg') == "Gray":
+            self.numInternalEntry.icursor(0)
+
     def clearExternal(self,event):
         ext = self.numExternalEntry.get()
         if ext == "0":
@@ -678,5 +769,9 @@ class interface(Tkinter.Tk):
         if len(ext) == 0:
             self.numExternalEntry.configure(fg="Gray")
             self.numExternalEntry.insert(0, 0)
+
+    def resetExternalCursor(self,event):
+        if self.numExternalEntry.cget('fg') == "Gray":
+            self.numExternalEntry.icursor(0)
 
     # lat and long methods
