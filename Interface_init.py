@@ -35,7 +35,8 @@ class interface(Tkinter.Tk):
         self.grid_columnconfigure(0,weight=1)
         self.resizable(False,False)
         self.update()
-        self.geometry("800x715+%d+%d" % (x,y))
+        self.geometry("900x815+%d+%d" % (x,y))
+        
 
         style = ttk.Style()
         style.map("TCombobox", 
@@ -44,6 +45,15 @@ class interface(Tkinter.Tk):
                 ('readonly', '!focus', 'SystemButtonFace'),
             ],
         )
+
+        # frame setup
+        leftFrame = Tkinter.LabelFrame(self, bd=0, width=450, height=450)
+        leftFrame.grid(column=0,row=3,sticky='w', pady=15)
+        leftFrame.grid_propagate(0)
+
+        rightFrame = Tkinter.LabelFrame(self, bd=0, width=450, height=450)
+        rightFrame.grid(column=1,row=3,sticky='w', pady=15)
+        rightFrame.grid_propagate(0)
 
         # title bar on top of window
         titleVariable = Tkinter.StringVar()
@@ -56,7 +66,6 @@ class interface(Tkinter.Tk):
         self.statusVariable.set("Crime Strategies Unit")
         self.statusLabel = Tkinter.Label(self,textvariable=self.statusVariable, fg="White",bg="#0154a0",font=self.statusFont)
         self.statusLabel.grid(column=0,row=100,columnspan=3,sticky='EW')
-
 
 
         ## Location Name ##
@@ -77,14 +86,14 @@ class interface(Tkinter.Tk):
 
         ## Address ##
         # group for address widgets
-        addressGroup = Tkinter.LabelFrame(self, bd=0)
-        addressGroup.grid(column=0,row=4,sticky='w', padx=5)
+        addressGroup = Tkinter.LabelFrame(leftFrame, bd=0)
+        addressGroup.grid(column=0,row=2,sticky='w', padx=5,pady=5)
 
         # Address label
         addressLabelVar = Tkinter.StringVar()
         addressLabelVar.set("Address: ")
-        addressLabel = Tkinter.Label(self, textvariable = addressLabelVar, anchor='w', font=self.labelFont)
-        addressLabel.grid(column=0,row=3, sticky='w', pady=7)
+        addressLabel = Tkinter.Label(addressGroup, textvariable = addressLabelVar, anchor='w', font=self.labelFont)
+        addressLabel.grid(column=0,row=1, sticky='w', pady=7)
 
         # Address vars
         self.addressStreetVar = Tkinter.StringVar()
@@ -93,7 +102,7 @@ class interface(Tkinter.Tk):
         self.addressStateVar = Tkinter.StringVar()
 
         # Address entry boxes init (row 3 - 10)
-        self.addressStreetEntry = Tkinter.Entry(addressGroup, textvariable = self.addressStreetVar, font=self.textboxFont)
+        self.addressStreetEntry = Tkinter.Entry(addressGroup, textvariable = self.addressStreetVar, width=30, font=self.textboxFont)
         self.addressStreetEntry.insert(0, "123 Street Name")
         self.addressStreetEntry.configure(fg="Gray")
         self.addressStreetEntry.grid(column=0,row=5,sticky='W', columnspan=2)
@@ -102,7 +111,7 @@ class interface(Tkinter.Tk):
         self.addressStreetEntry.bind("<FocusOut>", self.resetAddressStreetPlaceholder)
 
         # address 2nd line
-        self.addressLine2Entry = Tkinter.Entry(addressGroup, textvariable = self.addressLine2Var, font=self.textboxFont)
+        self.addressLine2Entry = Tkinter.Entry(addressGroup, textvariable = self.addressLine2Var, width=30, font=self.textboxFont)
         self.addressLine2Entry.grid(column=0,row=6,sticky='W', columnspan=2)
         self.addressLine2Entry.insert(0, "Apt, suite, etc.")
         self.addressLine2Entry.configure(fg="Gray")
@@ -111,7 +120,7 @@ class interface(Tkinter.Tk):
         self.addressLine2Entry.bind("<FocusOut>", self.resetAddressLine2Placeholder)
 
         # address city
-        self.addressCityEntry = Tkinter.Entry(addressGroup, textvariable = self.addressCityVar, width=16, font=self.textboxFont)
+        self.addressCityEntry = Tkinter.Entry(addressGroup, textvariable = self.addressCityVar, width=26, font=self.textboxFont)
         self.addressCityEntry.grid(column=0,row=7,sticky='W')
         self.addressCityEntry.insert(0, "City")
         self.addressCityEntry.configure(fg="Gray")
@@ -143,20 +152,20 @@ class interface(Tkinter.Tk):
         self.longitudeEntry.configure(fg="Gray", state='readonly')
 
         ## Contact information ##
+        # contact group
+        contactGroup = Tkinter.LabelFrame(leftFrame, bd=0)
+        contactGroup.grid(column=0,row=6,columnspan=2,sticky='w',padx=5,pady=5)
+        
         # Contact label
         contactInfoLabelVar = Tkinter.StringVar()
         contactInfoLabelVar.set("Contact information:")
-        contactInfoLabel = Tkinter.Label(self, textvariable=contactInfoLabelVar, anchor='w',font=self.labelFont)
-        contactInfoLabel.grid(column=0,row=5,sticky='w', pady=7)
-
-        # contact group
-        contactGroup = Tkinter.LabelFrame(self, bd=0)
-        contactGroup.grid(column=0,row=6,columnspan=2,sticky='w',padx=5)
+        contactInfoLabel = Tkinter.Label(contactGroup, textvariable=contactInfoLabelVar, anchor='w',font=self.labelFont)
+        contactInfoLabel.grid(column=0,row=1,sticky='w', pady=7)
 
         # first name
         self.contactFirstNameVar = Tkinter.StringVar()
-        self.contactFirstNameEntry = Tkinter.Entry(contactGroup, textvariable=self.contactFirstNameVar, width=15, font=self.textboxFont)
-        self.contactFirstNameEntry.grid(column=0,row=1,sticky='w')
+        self.contactFirstNameEntry = Tkinter.Entry(contactGroup, textvariable=self.contactFirstNameVar, width=20, font=self.textboxFont)
+        self.contactFirstNameEntry.grid(column=0,row=2,sticky='w')
         self.contactFirstNameEntry.insert(0, "First name")
         self.contactFirstNameEntry.configure(fg="Gray")
         self.contactFirstNameEntry.bind("<KeyPress>", self.clearFirstName)
@@ -165,8 +174,8 @@ class interface(Tkinter.Tk):
 
         # last name
         self.contactLastNameVar = Tkinter.StringVar()
-        self.contactLastNameEntry =  Tkinter.Entry(contactGroup, textvariable=self.contactLastNameVar, width=15, font=self.textboxFont)
-        self.contactLastNameEntry.grid(column=1,row=1,columnspan=2,sticky='w',padx=5)
+        self.contactLastNameEntry =  Tkinter.Entry(contactGroup, textvariable=self.contactLastNameVar, width=20, font=self.textboxFont)
+        self.contactLastNameEntry.grid(column=1,row=2,columnspan=2,sticky='w',padx=5)
         self.contactLastNameEntry.insert(0, "Last name")
         self.contactLastNameEntry.configure(fg="Gray")
         self.contactLastNameEntry.bind("<KeyPress>", self.clearLastName)
@@ -175,9 +184,9 @@ class interface(Tkinter.Tk):
 
         # title
         self.contactTitleVar = Tkinter.StringVar()
-        self.contactTitleEntry = Tkinter.Entry(contactGroup, textvariable=self.contactTitleVar, width=31, font=self.textboxFont)
-        self.contactTitleEntry.grid(column=0,row=2,columnspan=3,sticky='w')
-        self.contactTitleEntry.insert(0, "Title/rank")
+        self.contactTitleEntry = Tkinter.Entry(contactGroup, textvariable=self.contactTitleVar, width=41, font=self.textboxFont)
+        self.contactTitleEntry.grid(column=0,row=3,columnspan=3,sticky='w')
+        self.contactTitleEntry.insert(0, "Title/Rank")
         self.contactTitleEntry.configure(fg='Gray')
         self.contactTitleEntry.bind("<KeyPress>", self.clearTitle)
         self.contactTitleEntry.bind("<FocusIn>", self.resetTitleCursor)
@@ -186,9 +195,9 @@ class interface(Tkinter.Tk):
         # email
         self.contactEmailVar = Tkinter.StringVar()
         self.contactEmailVar = Tkinter.StringVar()
-        self.contactEmailEntry = Tkinter.Entry(contactGroup, textvariable=self.contactEmailVar, width=31, font=self.textboxFont)
-        self.contactEmailEntry.grid(column=0,row=3,columnspan=3,sticky='w')
-        self.contactEmailEntry.insert(0, "name@domain.com")
+        self.contactEmailEntry = Tkinter.Entry(contactGroup, textvariable=self.contactEmailVar, width=41, font=self.textboxFont)
+        self.contactEmailEntry.grid(column=0,row=4,columnspan=3,sticky='w')
+        self.contactEmailEntry.insert(0, "emailaddress@domain.com")
         self.contactEmailEntry.configure(fg='Gray')
         self.contactEmailEntry.bind("<KeyPress>", self.clearEmail)
         self.contactEmailEntry.bind("<FocusIn>", self.resetEmailCursor)
@@ -198,7 +207,7 @@ class interface(Tkinter.Tk):
         self.contactPhoneVar = Tkinter.StringVar()
         self.contactPhoneVar = Tkinter.StringVar()
         self.contactPhoneEntry = Tkinter.Entry(contactGroup, textvariable=self.contactPhoneVar, width=20, font=self.textboxFont)
-        self.contactPhoneEntry.grid(column=0,columnspan=2,row=4,sticky='w')
+        self.contactPhoneEntry.grid(column=0,columnspan=2,row=5,sticky='w')
         self.contactPhoneEntry.insert(0, "xxx-xxx-xxxx")
         self.contactPhoneEntry.configure(fg='Gray')
         self.contactPhoneEntry.bind("<KeyPress>", self.clearPhone)
@@ -208,8 +217,8 @@ class interface(Tkinter.Tk):
         # phone extension
         self.contactPhoneExtVar = Tkinter.StringVar()
         self.contactPhoneExtVar = Tkinter.StringVar()
-        self.contactPhoneExtEntry = Tkinter.Entry(contactGroup, textvariable=self.contactPhoneExtVar, width=10, font=self.textboxFont)
-        self.contactPhoneExtEntry.grid(column=2,row=4,sticky='w',padx=5)
+        self.contactPhoneExtEntry = Tkinter.Entry(contactGroup, textvariable=self.contactPhoneExtVar, width=20, font=self.textboxFont)
+        self.contactPhoneExtEntry.grid(column=2,row=5,sticky='w',padx=5)
         self.contactPhoneExtEntry.insert(0, "Extension")
         self.contactPhoneExtEntry.configure(fg='Gray')
         self.contactPhoneExtEntry.bind("<KeyPress>", self.clearPhoneExt)
@@ -219,19 +228,19 @@ class interface(Tkinter.Tk):
 
         ## Camera Details ##
         # details frame
-        detailsFrame = Tkinter.LabelFrame(self, bd=0)
-        detailsFrame.grid(column=0,row=12,padx=5,sticky='w')
+        detailsFrame = Tkinter.LabelFrame(leftFrame, bd=0)
+        detailsFrame.grid(column=0,row=8,padx=5,pady=5,sticky='w')
 
         # Camera details multiline box and label
         cameraDetailsLabelVar = Tkinter.StringVar()
         cameraDetailsLabelVar.set("Camera surveillance details:")
-        cameraDetailsLabel = Tkinter.Label(self, textvariable=cameraDetailsLabelVar, anchor='w',font=self.labelFont)
-        cameraDetailsLabel.grid(column=0,row=11,sticky='w', pady=7)
+        cameraDetailsLabel = Tkinter.Label(detailsFrame, textvariable=cameraDetailsLabelVar, anchor='w',font=self.labelFont)
+        cameraDetailsLabel.grid(column=0,row=1,sticky='w', pady=7)
 
         # external cameras
         self.numExternalVar = Tkinter.StringVar()
         self.numExternalEntry = Tkinter.Entry(detailsFrame, textvariable=self.numExternalVar, width=3,font=self.textboxFont)
-        self.numExternalEntry.grid(column=0,row=1,sticky='w')
+        self.numExternalEntry.grid(column=0,row=2,sticky='w')
         self.numExternalEntry.insert(0, 0)
         self.numExternalEntry.configure(fg="Gray")
         self.numExternalEntry.bind("<KeyPress>", self.clearExternal)
@@ -241,12 +250,12 @@ class interface(Tkinter.Tk):
         externalLabelVar = Tkinter.StringVar()
         externalLabelVar.set("External cameras")
         externalLabel = Tkinter.Label(detailsFrame, textvariable=externalLabelVar, anchor='w', font=self.smallLabelFont)
-        externalLabel.grid(column=0, row=1, sticky='w', padx=30)
+        externalLabel.grid(column=0, row=2, sticky='w', padx=30)
 
         # internal cameras
         self.numInternalVar = Tkinter.StringVar()
         self.numInternalEntry = Tkinter.Entry(detailsFrame, textvariable=self.numInternalVar, width=3,font=self.textboxFont)
-        self.numInternalEntry.grid(column=1,row=1,sticky='w')
+        self.numInternalEntry.grid(column=1,row=2,sticky='w')
         self.numInternalEntry.insert(0, 0)
         self.numInternalEntry.configure(fg="Gray")
         self.numInternalEntry.bind("<KeyPress>", self.clearInternal)
@@ -256,11 +265,11 @@ class interface(Tkinter.Tk):
         internalLabelVar = Tkinter.StringVar()
         internalLabelVar.set("Internal cameras")
         internalLabel = Tkinter.Label(detailsFrame, textvariable=internalLabelVar, anchor='w', font=self.smallLabelFont)
-        internalLabel.grid(column=1, row=1, sticky='w', padx=30)
+        internalLabel.grid(column=1, row=2, sticky='w', padx=30)
 
         # camera details free text
         self.cameraDetailsText = Tkinter.Text(detailsFrame, height=4, width=41)
-        self.cameraDetailsText.grid(column=0, row=3, sticky='w', columnspan=2)
+        self.cameraDetailsText.grid(column=0, row=4, sticky='w', columnspan=2)
         self.cameraDetailsText.insert(Tkinter.END, "Type description of surveillance area here...")
         self.cameraDetailsText.configure(fg="Gray", font=self.textboxFont, wrap=Tkinter.WORD)
         self.cameraDetailsText.bind("<KeyPress>", self.clearDetails)
@@ -270,108 +279,133 @@ class interface(Tkinter.Tk):
 
 
         ## DVR Information ##
+        DVRFrame = Tkinter.LabelFrame(rightFrame, bd=0)
+        DVRFrame.grid(column=2, row=7,padx=5, sticky='w')
+
         DVRLabelVar = Tkinter.StringVar()
         DVRLabelVar.set("DVR Information:")
-        DVRLabel = Tkinter.Label(self, textvariable=DVRLabelVar, anchor='w', font=self.labelFont)
-        DVRLabel.grid(column=0, row=13, sticky='w',pady=7)       
-
-        DVRFrame = Tkinter.LabelFrame(self, bd=0)
-        DVRFrame.grid(column=0, row=14,padx=5, sticky='w')
+        DVRLabel = Tkinter.Label(DVRFrame, textvariable=DVRLabelVar, anchor='w', font=self.labelFont)
+        DVRLabel.grid(column=0, row=1, sticky='w',pady=7)       
 
         # retention length
         retentionLengthLabelVar = Tkinter.StringVar()
         retentionLengthLabelVar.set("Retention length:")
         retentionLengthLabel = Tkinter.Label(DVRFrame, textvariable=retentionLengthLabelVar, anchor='w', font=self.smallLabelFont)
-        retentionLengthLabel.grid(column=0, row=1, sticky='nsw',pady=7)
+        retentionLengthLabel.grid(column=0, row=2, sticky='nsw',pady=7)
 
         choices = range(1,32)
         self.retentionValueVar = Tkinter.StringVar()
         self.retentionValueVar.set("#")
         self.retentionValue = ttk.Combobox(DVRFrame, textvariable=self.retentionValueVar, state='readonly', width=4)
         self.retentionValue['values'] = choices
-        self.retentionValue.grid(column=1, row=1, sticky='w',padx=5)
+        self.retentionValue.grid(column=1, row=2, sticky='w',padx=5)
         
         units = ['Days', 'Months', 'Years']
         self.retentionUnitsVar = Tkinter.StringVar()
         self.retentionUnitsVar.set("Units")
         self.retentionUnits = ttk.Combobox(DVRFrame, textvariable=self.retentionUnitsVar, state='readonly', width=8)
         self.retentionUnits['values'] = units
-        self.retentionUnits.grid(column=2, row=1, sticky='w',padx=5)
+        self.retentionUnits.grid(column=2, row=2, sticky='w',padx=5)
 
         Acc = ['Approximately', 'Exactly']
         self.retentionAccVar = Tkinter.StringVar()
         self.retentionAccVar.set("Accuracy")
         self.retentionAcc = ttk.Combobox(DVRFrame, textvariable=self.retentionAccVar, state='readonly', width=13)
         self.retentionAcc['values'] = Acc
-        self.retentionAcc.grid(column=3, row=1, sticky='w',padx=5)
+        self.retentionAcc.grid(column=3, row=2, sticky='w',padx=5)
 
-        style.configure('Combobox', background='white', fieldbackground='white')
+        style.configure('Combobox', background='white', fieldbackground='white', font=self.smallLabelFont)
 
         # DVR make
         makeLabelVar = Tkinter.StringVar()
         makeLabelVar.set("DVR make:")
         makeLabel = Tkinter.Label(DVRFrame, textvariable=makeLabelVar, anchor='w', font=self.smallLabelFont)
-        makeLabel.grid(column=0, row=2, sticky='nsw',pady=7)
+        makeLabel.grid(column=0, row=3, sticky='nsw',pady=7)
         
         self.makeVar = Tkinter.StringVar()
-        self.makeEntry = Tkinter.Entry(DVRFrame, textvariable=self.makeVar, width=27, font=self.textboxFont)
-        self.makeEntry.grid(column=1, row=2, columnspan=3, sticky='w', padx=5)
+        self.makeEntry = Tkinter.Entry(DVRFrame, textvariable=self.makeVar, width=34, font=self.textboxFont)
+        self.makeEntry.grid(column=1, row=3, columnspan=3, sticky='w', padx=5)
         
         # DVR model
         modelLabelVar = Tkinter.StringVar()
         modelLabelVar.set("DVR model:")
         modelLabel = Tkinter.Label(DVRFrame, textvariable=modelLabelVar, anchor='w', font=self.smallLabelFont)
-        modelLabel.grid(column=0, row=3, sticky='nsw',pady=7)
+        modelLabel.grid(column=0, row=4, sticky='nsw',pady=7)
         
         self.modelVar = Tkinter.StringVar()
-        self.modelEntry = Tkinter.Entry(DVRFrame, textvariable=self.modelVar, width=27, font=self.textboxFont)
-        self.modelEntry.grid(column=1, row=3, columnspan=3, sticky='w', padx=5)
-
+        self.modelEntry = Tkinter.Entry(DVRFrame, textvariable=self.modelVar, width=34, font=self.textboxFont)
+        self.modelEntry.grid(column=1, row=4, columnspan=3, sticky='w', padx=5)
 
         timeFrame = Tkinter.LabelFrame(DVRFrame,bd=0)
-        timeFrame.grid(column=1,row=4, rowspan=2, columnspan=3, sticky='s')
+        timeFrame.grid(column=1,row=5, rowspan=2, columnspan=3, sticky='s')
 
         # Time adjustment
         timeAdjLabelVar = Tkinter.StringVar()
         timeAdjLabelVar.set("Time adjustment:")
         timeAdjLabel = Tkinter.Label(DVRFrame, textvariable=timeAdjLabelVar, anchor='w', font=self.smallLabelFont)
-        timeAdjLabel.grid(column=0, row=4, sticky='nw',pady=7)
+        timeAdjLabel.grid(column=0, row=5, sticky='nw',pady=7)
 
         timeAdjLabelVar2 = Tkinter.StringVar() 
-        timeAdjLabelVar2.set("     Years              Months              Days")
+        timeAdjLabelVar2.set("     Years                   Months               Days")
         timeAdjLabel2 = Tkinter.Label(timeFrame, textvariable=timeAdjLabelVar2, anchor='w', font=self.smallerLabelFont)
-        timeAdjLabel2.grid(column=1, row=5, columnspan=3,padx=5, sticky='nw')
+        timeAdjLabel2.grid(column=1, row=2, columnspan=3,padx=5, sticky='nw')
+
+        timeAdjLabelVar3 = Tkinter.StringVar() 
+        timeAdjLabelVar3.set("     Hours                 Minutes              Seconds")
+        timeAdjLabel3 = Tkinter.Label(timeFrame, textvariable=timeAdjLabelVar3, anchor='w', font=self.smallerLabelFont)
+        timeAdjLabel3.grid(column=1, row=4, columnspan=3,padx=5, sticky='nw')
 
         years = range(0,51)
         self.timeAdjYearVar = Tkinter.StringVar()
         self.timeAdjYearVar.set(0)
         self.timeAdjYearCB = ttk.Combobox(timeFrame, textvariable=self.timeAdjYearVar, state='readonly', width=4)
         self.timeAdjYearCB['values'] = years
-        self.timeAdjYearCB.grid(column=1, row=4,padx=15)
+        self.timeAdjYearCB.grid(column=1, row=3,padx=15)
         
         months = range(0,12)
         self.timeAdjMonthVar = Tkinter.StringVar()
         self.timeAdjMonthVar.set(0)
         self.timeAdjMonthCB = ttk.Combobox(timeFrame, textvariable=self.timeAdjMonthVar, state='readonly', width=4)
         self.timeAdjMonthCB['values'] = months
-        self.timeAdjMonthCB.grid(column=2, row=4,padx=15)
+        self.timeAdjMonthCB.grid(column=2, row=3,padx=15)
 
         days = range(0,31)
         self.timeAdjDaysVar = Tkinter.StringVar()
         self.timeAdjDaysVar.set(0)
         self.timeAdjDaysCB = ttk.Combobox(timeFrame, textvariable=self.timeAdjDaysVar, state='readonly', width=4)
         self.timeAdjDaysCB['values'] = days
-        self.timeAdjDaysCB.grid(column=3, row=4, padx=15)
+        self.timeAdjDaysCB.grid(column=3, row=3, padx=15)
+
+        hours = range(0,24)
+        self.timeAdjHoursVar = Tkinter.StringVar()
+        self.timeAdjHoursVar.set(0)
+        self.timeAdjHoursCB = ttk.Combobox(timeFrame, textvariable=self.timeAdjHoursVar, state='readonly', width=4)
+        self.timeAdjHoursCB['values'] = hours
+        self.timeAdjHoursCB.grid(column=1, row=6,padx=15)
+        
+        minutes = range(0,60)
+        self.timeAdjMinutesVar = Tkinter.StringVar()
+        self.timeAdjMinutesVar.set(0)
+        self.timeAdjMinutesCB = ttk.Combobox(timeFrame, textvariable=self.timeAdjMinutesVar, state='readonly', width=4)
+        self.timeAdjMinutesCB['values'] = minutes
+        self.timeAdjMinutesCB.grid(column=2, row=6,padx=15)
+
+        seconds = range(0,60)
+        self.timeAdjSecondsVar = Tkinter.StringVar()
+        self.timeAdjSecondsVar.set(0)
+        self.timeAdjSecondsCB = ttk.Combobox(timeFrame, textvariable=self.timeAdjSecondsVar, state='readonly', width=4)
+        self.timeAdjSecondsCB['values'] = seconds
+        self.timeAdjSecondsCB.grid(column=3, row=6, padx=15)
 
         ## Recording Details ##
         # label
         recordingLabelVar = Tkinter.StringVar()
         recordingLabelVar.set("Recording Details:")
-        recordingLabel = Tkinter.Label(self, textvariable=recordingLabelVar, width=34, anchor='w', font=self.labelFont)
+        recordingLabel = Tkinter.Label(rightFrame, textvariable=recordingLabelVar, width=34, anchor='w', font=self.labelFont)
         recordingLabel.grid(column=2, row=3, sticky='w', pady=7)
 
         # Recording frame
-        recordingFrame = Tkinter.LabelFrame(self, bd=0)
+        recordingFrame = Tkinter.LabelFrame(rightFrame, bd=0)
         recordingFrame.grid(column=2, row=4, rowspan=2, sticky='nw', padx=5)
 
         # start date label
@@ -679,7 +713,7 @@ class interface(Tkinter.Tk):
 
     def clearTitle(self, event):
         title = self.contactTitleEntry.get()
-        if title == "Title/rank":
+        if title == "Title/Rank":
             self.contactTitleEntry.delete(0, Tkinter.END)
             self.contactTitleEntry.configure(fg='Black')
 
@@ -687,7 +721,7 @@ class interface(Tkinter.Tk):
         title = self.contactTitleEntry.get()
         if len(title) == 0:
             self.contactTitleEntry.configure(fg="Gray")
-            self.contactTitleEntry.insert(0, "Title/rank")
+            self.contactTitleEntry.insert(0, "Title/Rank")
 
     def resetTitleCursor(self,event):
         if self.contactTitleEntry.cget('fg') == "Gray":
@@ -695,7 +729,7 @@ class interface(Tkinter.Tk):
 
     def clearEmail(self, event):
         email = self.contactEmailEntry.get()
-        if email == "name@domain.com":
+        if email == "emailaddress@domain.com":
             self.contactEmailEntry.delete(0, Tkinter.END)
             self.contactEmailEntry.configure(fg='Black')
 
@@ -703,7 +737,7 @@ class interface(Tkinter.Tk):
         email = self.contactEmailEntry.get()
         if len(email) == 0:
             self.contactEmailEntry.configure(fg="Gray")
-            self.contactEmailEntry.insert(0, "name@domain.com")
+            self.contactEmailEntry.insert(0, "emailaddress@domain.com")
 
     def resetEmailCursor(self,event):
         if self.contactEmailEntry.cget('fg') == "Gray":
